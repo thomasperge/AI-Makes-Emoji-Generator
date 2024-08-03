@@ -1,3 +1,7 @@
-data/images
+# Ignorer le __pycache__
 __pycache__
 .env
+
+# Ignorer les dossiers dataset et models
+/data
+/models
