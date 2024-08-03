@@ -27,4 +27,4 @@ def generate_emoji(prompt):
 
 
 # Exemple d'utilisation
-generate_emoji("smiling face with sunglasses")
+generate_emoji("smiling angry")
