@@ -28,10 +28,13 @@ generator = Generator(latent_dim, img_shape)
 discriminator = Discriminator(img_shape)
 
 # Entraîner le GAN
-train_gan(generator, discriminator, dataloader, latent_dim, n_epochs, lr, b1, b2, sample_interval, save_interval, model_folder)
+train_gan(generator, discriminator, dataloader, latent_dim, n_epochs,
+          lr, b1, b2, sample_interval, save_interval, model_folder)
 
 # Sauvegarder les modèles finaux
 if not os.path.exists(model_folder):
     os.makedirs(model_folder)
-torch.save(generator.state_dict(), os.path.join(model_folder, 'generator_final.pth'))
-torch.save(discriminator.state_dict(), os.path.join(model_folder, 'discriminator_final.pth'))
+torch.save(generator.state_dict(), os.path.join(
+    model_folder, 'generator_final.pth'))
+torch.save(discriminator.state_dict(), os.path.join(
+    model_folder, 'discriminator_final.pth'))

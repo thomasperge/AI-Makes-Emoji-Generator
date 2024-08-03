@@ -3,6 +3,7 @@ from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
+
 class EmojiDataset(Dataset):
     def __init__(self, image_folder, description_file, transform=None):
         self.image_folder = image_folder
@@ -29,7 +30,8 @@ class EmojiDataset(Dataset):
 
         # Vérifier que des images et descriptions ont été chargées
         if not self.image_files or not self.descriptions:
-            raise ValueError("Aucune image ou description trouvée. Vérifie le format du fichier.")
+            raise ValueError(
+                "Aucune image ou description trouvée. Vérifie le format du fichier.")
 
     def __len__(self):
         return len(self.image_files)
@@ -42,12 +44,15 @@ class EmojiDataset(Dataset):
         description = self.descriptions[idx]
         return image, description
 
+
 transform = transforms.Compose([
     transforms.Resize((64, 64)),
     transforms.ToTensor(),
     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
 ])
 
+
 def get_dataloader(image_folder, description_file, batch_size):
-    dataset = EmojiDataset(image_folder=image_folder, description_file=description_file, transform=transform)
+    dataset = EmojiDataset(image_folder=image_folder,
+                           description_file=description_file, transform=transform)
     return DataLoader(dataset, batch_size=batch_size, shuffle=True)
