@@ -20,7 +20,7 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # Boucle sur les 5 premières lignes du DataFrame
-for i in range(5):
+for i in range(150):
     base64_decoded = base64.b64decode(emoji['Apple'][i].split(',')[-1])
     image = Image.open(io.BytesIO(base64_decoded)).convert('RGBA')
     
