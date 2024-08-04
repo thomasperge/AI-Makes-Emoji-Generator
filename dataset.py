@@ -9,7 +9,7 @@ class EmojiDataset(Dataset):
         self.image_folder = image_folder
         self.transform = transform
         self.data = pd.read_csv(csv_file)
-        self.data = self.data.head(150)  # Prendre seulement les 5 premières lignes pour tester
+        self.data = self.data.head(500)  # Prendre seulement les 5 premières lignes pour tester
         self.image_files = [os.path.join(image_folder, f"emoji_{i+1}.png") for i in range(len(self.data))]
 
 
