@@ -17,24 +17,21 @@ save_interval = 1000
 
 # Dossier des images et fichiers de descriptions
 image_folder = 'data/images/'
-description_file = 'data/descriptions.txt'
+csv_file = 'path_to_your_csv_file.csv'  # Remplace par le chemin de ton fichier CSV
 model_folder = 'models/'
 
 # Préparer les données
-dataloader = get_dataloader(image_folder, description_file, batch_size)
+dataloader = get_dataloader(image_folder, csv_file, batch_size)
 
 # Instancier le générateur et le discriminateur
 generator = Generator(latent_dim, img_shape)
 discriminator = Discriminator(img_shape)
 
 # Entraîner le GAN
-train_gan(generator, discriminator, dataloader, latent_dim, n_epochs,
-          lr, b1, b2, sample_interval, save_interval, model_folder)
+train_gan(generator, discriminator, dataloader, latent_dim, n_epochs, lr, b1, b2, sample_interval, save_interval)
 
-# Sauvegarder les modèles finaux
+# Sauvegarder les modèles
 if not os.path.exists(model_folder):
     os.makedirs(model_folder)
-torch.save(generator.state_dict(), os.path.join(
-    model_folder, 'generator_final.pth'))
-torch.save(discriminator.state_dict(), os.path.join(
-    model_folder, 'discriminator_final.pth'))
+torch.save(generator.state_dict(), os.path.join(model_folder, 'generator_final.pth'))
+torch.save(discriminator.state_dict(), os.path.join(model_folder, 'discriminator_final.pth'))

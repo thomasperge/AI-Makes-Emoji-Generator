@@ -1,58 +1,35 @@
 import os
-from PIL import Image
-from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
+import pandas as pd
+from PIL import Image, ImageDraw, ImageFont
 
+# Charger le fichier CSV
+csv_file = 'data/emoji_data.csv'  # Remplace par le chemin de ton fichier CSV
+data = pd.read_csv(csv_file)
+print(data)
 
-class EmojiDataset(Dataset):
-    def __init__(self, image_folder, description_file, transform=None):
-        self.image_folder = image_folder
-        self.transform = transform
-        self.image_files = []
-        self.descriptions = []
+# Créer le dossier pour les images si ce n'est pas déjà fait
+image_folder = 'data/images/'
+if not os.path.exists(image_folder):
+    os.makedirs(image_folder)
 
-        # Lire le fichier de descriptions
-        with open(description_file, 'r') as file:
-            for line in file:
-                line = line.strip()
-                if not line:
-                    continue
-                if ',' in line:
-                    parts = line.split(',', 1)
-                    if len(parts) == 2:
-                        img_file, description = parts
-                        self.image_files.append(img_file.strip())
-                        self.descriptions.append(description.strip())
-                    else:
-                        print(f"Skipping invalid line: {line}")
-                else:
-                    print(f"Skipping invalid line: {line}")
+# Définir la taille et la police pour les images d'emojis
+image_size = (64, 64)
+font_size = 48
+font = ImageFont.truetype("NotoColorEmoji-Regular.ttf", font_size)  # Assure-toi d'avoir la police arial.ttf ou spécifie une autre police
 
-        # Vérifier que des images et descriptions ont été chargées
-        if not self.image_files or not self.descriptions:
-            raise ValueError(
-                "Aucune image ou description trouvée. Vérifie le format du fichier.")
+for index, row in data.iterrows():
+    emoji_char = row['Emoji']
+    print(emoji_char)
+    description = row['Description']
+    image = Image.new('RGB', image_size, (255, 255, 255))
+    draw = ImageDraw.Draw(image)
+    
+    # Utiliser textbbox pour obtenir la taille du texte
+    bbox = draw.textbbox((0, 0), emoji_char, font=font)
+    w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    
+    draw.text(((image_size[0] - w) / 2, (image_size[1] - h) / 2), emoji_char, font=font, fill=(0, 0, 0))
+    image_file = os.path.join(image_folder, f"{index}.png")
+    image.save(image_file)
 
-    def __len__(self):
-        return len(self.image_files)
-
-    def __getitem__(self, idx):
-        img_path = os.path.join(self.image_folder, self.image_files[idx])
-        image = Image.open(img_path).convert('RGB')
-        if self.transform:
-            image = self.transform(image)
-        description = self.descriptions[idx]
-        return image, description
-
-
-transform = transforms.Compose([
-    transforms.Resize((64, 64)),
-    transforms.ToTensor(),
-    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
-])
-
-
-def get_dataloader(image_folder, description_file, batch_size):
-    dataset = EmojiDataset(image_folder=image_folder,
-                           description_file=description_file, transform=transform)
-    return DataLoader(dataset, batch_size=batch_size, shuffle=True)
+print("Conversion des emojis en images terminée.")
