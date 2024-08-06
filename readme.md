@@ -1,3 +1,5 @@
+IA to make custom emojis from text prompts. Input a description, and the AI generates a unique emoji based on your specifications
+
 # Crée et active un environnement virtuel
 python -m venv venv
 source venv/bin/activate  # Sur Windows, utilise `venv\Scripts\activate`
