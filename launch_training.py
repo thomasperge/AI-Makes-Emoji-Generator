@@ -9,12 +9,13 @@ from train_gan import train_gan
 latent_dim = 100
 img_shape = (3, 64, 64)
 batch_size = 32
-n_epochs = 150  # Augmenté pour plus de stabilité
+n_epochs = 300  # Augmenté pour plus de stabilité
 lr = 0.0002
 b1 = 0.5
 b2 = 0.999
 sample_interval = 1000  # Plus fréquent pour observation
-save_interval = 1  # Plus fréquent pour sauvegarde
+save_interval = 1000  # Plus fréquent pour sauvegarde
+# save_interval = 1000 
 
 # Dossier des images et dossier pour sauvegarder les modèles
 image_folder = 'data/images/'
